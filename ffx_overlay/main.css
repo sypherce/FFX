@@ -1,6 +1,6 @@
 @font-face {
 	font-family: FinalFantasy;
-	src: url("assets/RunicMTCondensed.ttf");
+	src: url("../assets/RunicMTCondensed.ttf");
 }
 canvas {
 	background-color: #00F;
