@@ -96,7 +96,7 @@ export  function Character(_name, _x, _y) {
 			y = y + 3
 			draw.radial_gradient_rect(x, y, face_rect_width, face_rect_height, 0, "#ffffff46", "#00000046");
 			this.face.draw(x, y);
-			draw.text(name.toUpperCase(), "normal 44px FinalFantasy", "black", "white", 1, x+10, y+52)
+			draw.text(this.name.toUpperCase(), "normal 44px FinalFantasy", "black", "white", 1, x, y+40)
 
 			x = x + face_rect_width
 			draw.linear_gradient_rect(x, y, bgrectWidth, bgrectHeight, 0, "#00000046", "#ffffff46");
@@ -104,13 +104,13 @@ export  function Character(_name, _x, _y) {
 			x = x - 11
 			y = y + 13 + 2
 			draw.rect(x + shadow, y + shadow, rectWidth, rectHeight, shear, "#000000d9");
-			draw.linear_pulsing_gradient_rect(x, y, Math.ceil(rectWidth * hp_mult), rectHeight, shear, "#ff0100bd", "#ff9100bd", gradient_pulse);
+			draw.linear_pulsing_gradient_rect(x, y, Math.ceil(rectWidth * hp_mult), rectHeight, shear, "#ff0100bd", "#ff9100ff", gradient_pulse);
 			draw.text("HP", "normal 44px FinalFantasy", "white", "black", 3, x + 6, y + 24)
 			draw.text(this.hp, "bold italic 36px Georgia", "white", "black", 2, x + 75, y + 20)
 
 			y = y + rectHeight + shadow + shadow+  6
 			draw.rect(x + shadow, y + shadow, rectWidth, rectHeight, shear, "#000000d9");
-			draw.linear_pulsing_gradient_rect(x, y, Math.ceil(rectWidth * mp_mult), rectHeight, shear, "#23ff00bd", "#00ccffbd", gradient_pulse);
+			draw.linear_pulsing_gradient_rect(x, y, Math.ceil(rectWidth * mp_mult), rectHeight, shear, "#23ff00bd", "#00ccffff", gradient_pulse);
 			draw.text("MP", "normal 44px FinalFantasy", "white", "black", 3, x + 6, y + 24)
 			draw.text(this.mp, "bold italic 36px Georgia", "white", "black", 2, x + 75, y + 20)
 
