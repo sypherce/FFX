@@ -1,6 +1,6 @@
 'use strict';
 import AccessFile from './access_file.js';
-import Character from './character.js';
+import {Character, update_gradient_pulse} from './character.js';
 import * as draw from './draw.js';
 
 var background_image;
@@ -51,6 +51,7 @@ function draw_all() {
 	draw.text(time_file.read(), "bold italic 28px Georgia", "white", "black", 2, 12, 76);
 	draw.text(gil_file.read(), "bold italic 28px Georgia", "white", "black", 2, 200, 76);
 
+	update_gradient_pulse();
 	tidus_character.draw();
 	yuna_character.draw();
 	auron_character.draw();

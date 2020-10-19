@@ -80,6 +80,13 @@ function create_linear_gradient(x0, y0, x1, y1, c0, c1) {
 	grd.addColorStop(1, c1);
 	return grd;
 }
+function create_pulsing_linear_gradient(x0, y0, x1, y1, c0, c1, pulse) {
+	var grd = temp_context.createLinearGradient(x0, y0, x1, y1);
+	grd.addColorStop(0, c0);
+	grd.addColorStop(pulse, c1);
+	grd.addColorStop(1, c1);
+	return grd;
+}
 export function rect(x, y, w, h, s, c) {
 	temp_context.transform(1, 0, s, 1, 0, 0);//shear(s)
 	temp_context.translate(27 * -s, 0);
@@ -91,6 +98,11 @@ export function rect(x, y, w, h, s, c) {
 	temp_context.resetTransform();
 	temp_context.clearRect(0, 0, temp_canvas.width, temp_canvas.height);
 	main_context.resetTransform();
+}
+export function linear_pulsing_gradient_rect(x, y, w, h, s, c0, c1, pulse) {
+	if(pulse < 0.0) pulse = 0.0;
+	else if(pulse > 1.0) pulse = 1.0;
+	rect(x, y, w, h, s, create_pulsing_linear_gradient(-w / 2, -h / 2, w / 2, h / 2, c0, c1, pulse));
 }
 export function linear_gradient_rect(x, y, w, h, s, c0, c1) {
 	rect(x, y, w, h, s, create_linear_gradient(-w / 2, -h / 2, w / 2, h / 2, c0, c1));

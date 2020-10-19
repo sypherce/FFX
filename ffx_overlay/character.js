@@ -1,7 +1,55 @@
 'use strict';
 import AccessFile from './access_file.js';
 import * as draw from './draw.js';
-export default function Character(_name, _x, _y) {
+function clamp(value, min, max) {
+	return Math.min(Math.max(value, min), max);
+}
+function CountTo(value, target, steps) {
+	var diff = (target - value) / steps;
+	var retval;
+	if(diff > 0)
+	{
+		retval = value + Math.ceil(diff);
+		if(retval > target)
+			retval = target;
+	}
+	else
+	{
+		retval = value + Math.floor(diff);
+		if(retval < target)
+			retval = target;
+	}
+
+	return retval;
+}
+function CountToFloat(value, target, steps) {
+	var diff = (target - value) / steps;
+	var retval;
+	if(diff > 0)
+	{
+		retval = value + diff;
+		if(retval > target)
+			retval = target;
+	}
+	else
+	{
+		retval = value + diff;
+		if(retval < target)
+			retval = target;
+	}
+
+	return retval;
+}
+var gradient_pulse = 0.5;
+var gradient_pulse_target = 1.0;
+export function update_gradient_pulse() {
+	gradient_pulse = CountToFloat(gradient_pulse, gradient_pulse_target, 50);
+	if(gradient_pulse + 0.1 >= 1.0)
+		gradient_pulse_target = 0.0;
+	if(gradient_pulse - 0.1 <= 0.0)
+		gradient_pulse_target = 1.0;
+}
+export  function Character(_name, _x, _y) {
 	const php_file = "access_file.php?";
 	var character_object = {
 		name: _name,
@@ -10,8 +58,12 @@ export default function Character(_name, _x, _y) {
 		y: _y,
 		hp: -1,
 		hp_file: AccessFile('character=' + _name.toLowerCase() + '&stat=curr_hp'),
+		max_hp: -1,
+		max_hp_file: AccessFile('character=' + _name.toLowerCase() + '&stat=max_hp'),
 		mp: -1,
 		mp_file: AccessFile('character=' + _name.toLowerCase() + '&stat=curr_mp'),
+		max_mp: -1,
+		max_mp_file: AccessFile('character=' + _name.toLowerCase() + '&stat=max_mp'),
 		slvl: -1,
 		slvl_file: AccessFile('character=' + _name.toLowerCase() + '&stat=slvl'),
 		draw : function(x, y) {
@@ -23,9 +75,14 @@ export default function Character(_name, _x, _y) {
 			const face_rect_height = 96;
 			const shadow = 4
 			const shear = -0.5
-			character_object.hp = character_object.hp_file.read();
-			character_object.mp = character_object.mp_file.read();
-			character_object.slvl = character_object.slvl_file.read();
+			const steps = 15;
+			this.hp = CountTo(this.hp, this.hp_file.read(), steps);
+			this.mp = CountTo(this.mp, this.mp_file.read(), steps);
+			this.max_hp = this.max_hp_file.read();
+			this.max_mp = this.max_mp_file.read();
+			this.slvl = CountTo(this.slvl, this.slvl_file.read(), steps);
+			var hp_mult = clamp(this.hp / this.max_hp, 0, 1);
+			var mp_mult = clamp(this.mp / this.max_mp, 0, 1);
 
 			//still not comfortable with JS syntax
 			//test that the (this.)x and (this.)y work, not being _x and _y
@@ -47,13 +104,13 @@ export default function Character(_name, _x, _y) {
 			x = x - 11
 			y = y + 13 + 2
 			draw.rect(x + shadow, y + shadow, rectWidth, rectHeight, shear, "#000000d9");
-			draw.linear_gradient_rect(x, y, rectWidth, rectHeight, shear, "#ff0100bd", "#ff9100bd");
+			draw.linear_pulsing_gradient_rect(x, y, Math.ceil(rectWidth * hp_mult), rectHeight, shear, "#ff0100bd", "#ff9100bd", gradient_pulse);
 			draw.text("HP", "normal 44px FinalFantasy", "white", "black", 3, x + 6, y + 24)
 			draw.text(this.hp, "bold italic 36px Georgia", "white", "black", 2, x + 75, y + 20)
 
 			y = y + rectHeight + shadow + shadow+  6
 			draw.rect(x + shadow, y + shadow, rectWidth, rectHeight, shear, "#000000d9");
-			draw.linear_gradient_rect(x, y, rectWidth, rectHeight, shear, "#23ff00bd", "#00ccffbd");
+			draw.linear_pulsing_gradient_rect(x, y, Math.ceil(rectWidth * mp_mult), rectHeight, shear, "#23ff00bd", "#00ccffbd", gradient_pulse);
 			draw.text("MP", "normal 44px FinalFantasy", "white", "black", 3, x + 6, y + 24)
 			draw.text(this.mp, "bold italic 36px Georgia", "white", "black", 2, x + 75, y + 20)
 
