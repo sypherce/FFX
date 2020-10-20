@@ -39,16 +39,16 @@ local function read_bytes(addr, length)
 	return stringtobytes(string_, length)
 end
 local function SecondsToClock(seconds)
-  local seconds = tonumber(seconds)
+	local seconds = tonumber(seconds)
 
-  if seconds <= 0 then
-    return "00:00:00";
-  else
-    hours = string.format("%02.f", math.floor(seconds/3600));
-    mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
-    secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
-    return hours..":"..mins..":"..secs
-  end
+	if seconds <= 0 then
+		return "00:00:00";
+	else
+		hours = string.format("%02.f", math.floor(seconds/3600));
+		mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
+		secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
+		return hours..":"..mins..":"..secs
+	end
 end
 
 local function write_value(filename, value)
@@ -56,6 +56,14 @@ local function write_value(filename, value)
 		io.output(file)
 		io.write(value)
 		io.close(file)
+end
+
+local function read_value(filename)
+	local file = io.open(filename, "r")
+		local contents = file:read("*all")
+		file:close()
+
+	return contents
 end
 
 local function export_character(number)
@@ -92,9 +100,26 @@ local function export_time(integer, filename)
 	return value
 end
 
+local obs_command = "C:\\apps\\stream\\OBSCommand\\OBSCommand.exe"
+local obs_command_password = read_value("password.txt")
+local battle_scene = "FFX"
+local normal_scene = "FFX_FullScreen"
+
+local in_battle = false
+local function process_obs_command(in_battle_check)
+	if in_battle_check ~= in_battle then
+		in_battle = in_battle_check
+		if(in_battle_check == 0) then
+			os.execute(obs_command .. " /password=" .. obs_command_password .. " /scene=" .. battle_scene)
+		else
+			os.execute(obs_command .. " /password=" .. obs_command_password .. " /scene=" .. normal_scene)
+		end
+	end
+end
+
 local function main_loop()
 	export_integer(gil_addr, 4, gil_filename);
-	export_integer(battle_addr, 4, battle_filename);
+	process_obs_command(export_integer(battle_addr, 4, battle_filename));
 	export_time(time_addr, time_filename);
 	for i = 0,6,1
 	do

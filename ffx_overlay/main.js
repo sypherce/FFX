@@ -46,8 +46,8 @@ function draw_all() {
 	draw_bouncing_background(background_image, 10, 8);
 
 	draw.text("TIME PLAYED             GIL", "normal 40px FinalFantasy", "left", "white", "black", 2, 12, 48);
-	draw.rect(14, 51, 108, 2, 0, "#FFFFFF");
-	draw.rect(185, 51, 26, 2, 0, "#FFFFFF");
+	draw.rect(14, 51, 108, 2, 0, "white");
+	draw.rect(185, 51, 26, 2, 0, "white");
 	draw.text(time_file.read(), "bold italic 28px Georgia", "left", "white", "black", 2, 12, 76);
 	draw.text(gil_file.read(), "bold italic 28px Georgia", "left", "white", "black", 2, 183, 76);
 
