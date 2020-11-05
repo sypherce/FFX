@@ -50,24 +50,31 @@ function draw_bouncing_background(background, x_speed, y_speed, timestamp) {
 
 	background.draw(background.sx, background.sy, draw.get_width(), draw.get_height(), 0, 0, draw.get_width(), draw.get_height());
 }
-
+var counter = 60;
 function draw_all(timestamp) {
-	draw_bouncing_background(background_image, 10, 8, timestamp);
+	if(counter >= 60 / draw.fps)
+	{
+		counter = 0;
+		draw_bouncing_background(background_image, 10, 8, timestamp);
 
-	draw.text("TIME PLAYED             GIL", "normal 40px FinalFantasy", "left", "white", "black", 2, 12, 48);
-	draw.rect(14, 51, 108, 2, 0, "white");
-	draw.rect(185, 51, 26, 2, 0, "white");
-	draw.text(time_file.read(), "bold italic 28px Georgia", "left", "white", "black", 2, 12, 76);
-	draw.text(gil_file.read(), "bold italic 28px Georgia", "left", "white", "black", 2, 183, 76);
+		draw.text("TIME PLAYED             GIL", "normal 40px FinalFantasy", "left", "white", "black", 2, 12, 48);
+		draw.rect(14, 51, 108, 2, 0, "white");
+		draw.rect(185, 51, 26, 2, 0, "white");
+		draw.text(time_file.read(), "bold italic 28px Georgia", "left", "white", "black", 2, 12, 76);
+		draw.text(gil_file.read(), "bold italic 28px Georgia", "left", "white", "black", 2, 183, 76);
 
-	update_gradient_pulse(timestamp);
-	tidus_character.draw();
-	yuna_character.draw();
-	auron_character.draw();
-	kimahri_character.draw();
-	wakka_character.draw();
-	lulu_character.draw();
-	rikku_character.draw();
+		update_gradient_pulse(timestamp);
+		tidus_character.draw();
+		yuna_character.draw();
+		auron_character.draw();
+		kimahri_character.draw();
+		wakka_character.draw();
+		lulu_character.draw();
+		rikku_character.draw();
+	}
+	else{
+		counter = counter + 1;
+	}
 	window.requestAnimationFrame(draw_all);
 }
 function init(background_filename, w, h, fps) {

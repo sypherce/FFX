@@ -47,7 +47,7 @@ export function update_gradient_pulse(timestamp) {
 	if(time_diff >= frame_timestamp)
 	{
 		last_timestamp = timestamp;
-		gradient_pulse = CountToFloat(gradient_pulse, gradient_pulse_target, time_diff * 2);
+		gradient_pulse = CountToFloat(gradient_pulse, gradient_pulse_target, (frame_timestamp / time_diff) * 50);
 		if(gradient_pulse + 0.1 >= 1.0)
 			gradient_pulse_target = 0.0;
 		if(gradient_pulse - 0.1 <= 0.0)
