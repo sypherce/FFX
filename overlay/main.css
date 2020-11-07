@@ -1,0 +1,12 @@
+@font-face {
+	font-family: FinalFantasy;
+	src: url("../assets/RunicMTCondensed.ttf");
+}
+canvas {
+	background-color: #00F;
+}
+body {
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+}

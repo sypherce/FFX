@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
 $filename_arg = $_GET["filename"];
+$game_arg = $_GET["game"];
 $character_arg = $_GET["character"];
 $stat_arg = $_GET["stat"];
 $value_arg = $_GET["value"];
@@ -19,7 +20,7 @@ if($filename_arg) {
 	}
 }
 elseif($character_arg && $stat_arg) {
-	echo(file_get_contents("ffx_overlay/assets/" . $character_arg . "/" . $stat_arg . ".txt"));
+	echo(file_get_contents("overlay/assets/" . $game_arg . "/" . $character_arg . "/" . $stat_arg . ".txt"));
 }
 elseif($value_arg) {
 	switch($value_arg) {
@@ -27,7 +28,7 @@ elseif($value_arg) {
 		case "room":
 		case "gil":
 		case "time":
-			echo(file_get_contents("ffx_overlay/assets/" . $value_arg . ".txt"));
+			echo(file_get_contents("overlay/assets/" . $game_arg . "/" . $value_arg . ".txt"));
 			break;
 		default:
 			break;
